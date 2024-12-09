@@ -39,35 +39,6 @@ export const getFullName = (firstName: string, lastName: string) => {
   return formatName(`${firstName} ${lastName}`)
 }
 
-export const excelDateToJSDate = (excelDate: string | number): string => {
-  if (typeof excelDate === 'number') {
-    // Handle Excel serial date number
-    const date = new Date((excelDate - (25567 + 2)) * 86400 * 1000)
-    return format(date, "yyyy-MM-dd'T'HH:mm:ss'Z'")
-  } else if (typeof excelDate === 'string') {
-    // Handle date string in "YYYY-MM-DD" format
-    const date = parse(excelDate, 'yyyy-MM-dd', new Date())
-    return format(date, "yyyy-MM-dd'T'HH:mm:ss'Z'")
-  }
-  return ''
-}
-export const excelDateToJSDateUI = (serial: number): string => {
-  if (serial === 0) return ''
-  const utc_days = Math.floor(serial - 25569)
-  const date_info = new Date(utc_days * 86400 * 1000)
-
-  const fractional_day = serial - Math.floor(serial)
-  const total_seconds = Math.floor(86400 * fractional_day)
-
-  const seconds = total_seconds % 60
-  const minutes = Math.floor(total_seconds / 60) % 60
-  const hours = Math.floor(total_seconds / 3600)
-
-  date_info.setUTCHours(hours, minutes, seconds)
-
-  return date_info.toISOString().split('T')[0]
-}
-
 export const getDefaultParams = (): Params => ({
   limit: 10,
   page: 1,
